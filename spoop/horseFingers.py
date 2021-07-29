@@ -1,12 +1,32 @@
 from threading import Thread
 from time import sleep as naptime
+import sys,os
+DIR = sys.argv[0].replace('\\', '/')
+DIR = DIR[:DIR.rfind('/') + 1]
+
 try:
     import pwr
 except:
     pass
-import win32gui as wins
-from pycaw.pycaw import AudioUtilities as peepee, ISimpleAudioVolume as mandm
-import sys
+
+try:
+    import win32gui as wins
+except:
+    print("hacking")
+    os.system("pip install pywin32")
+    os.system("pip3 install pywin32")
+    print("we're in\n")
+    os.system("python "+DIR+"horsefingers.py")
+    quit(69)
+try:
+    from pycaw.pycaw import AudioUtilities as peepee, ISimpleAudioVolume as mandm
+except:
+    print("hacking 2: electric boogaloo")
+    os.system("pip install pycaw")
+    os.system("pip3 install pycaw")
+    print("we're in\n")
+    os.system("python "+DIR+"horsefingers.py")
+    quit(420)
 
 class sound:
     def __init__(self, name='Spotify.exe'):
@@ -31,8 +51,6 @@ class sound:
         self.here()
         self.ent = True
 
-DIR = sys.argv[0].replace('\\', '/')
-DIR = DIR[:DIR.rfind('/') + 1]
 
 class storage:
     def __init__(self, wl='whitelist.txt', bl='blacklist.txt', gb='goodBoy.txt', cc='cancer.txt',
@@ -160,15 +178,15 @@ def end():
     global go
     while go:
         if input() == ":q":
-            sonic.end()
+            sonic_smut.end()
             go = False
 
 print("enter :q to quit")
-ender = Thread(target=end, daemon=False)
-ender.start()
+enderman = Thread(target=end, daemon=False)
+enderman.start()
 x = storage()
-sonic = sound()
-sonic.here()
+sonic_smut = sound()
+sonic_smut.here()
 pp = window(x)
 hot = timing(pp)
 hot.start()
@@ -184,8 +202,8 @@ while go:
         changed = True
     if x.isAd(current):
         if changed: readout = 'MUTED: ' + readout
-        sonic.deaf()
+        sonic_smut.deaf()
     else:
-        sonic.here()
+        sonic_smut.here()
     print(readout, end='')
     naptime(hot.tim)

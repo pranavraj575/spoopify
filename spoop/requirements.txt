@@ -1,2 +1,2 @@
 pycaw
-win32py
+pywin32
