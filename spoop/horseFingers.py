@@ -1,6 +1,7 @@
 from threading import Thread
 from time import sleep as naptime
-import sys,os
+import sys, os
+
 DIR = sys.argv[0].replace('\\', '/')
 DIR = DIR[:DIR.rfind('/') + 1]
 
@@ -16,7 +17,7 @@ except:
     os.system("pip install pywin32")
     os.system("pip3 install pywin32")
     print("we're in\n")
-    os.system("python "+DIR+"horsefingers.py")
+    os.system("python " + DIR + "horsefingers.py")
     quit(69)
 try:
     from pycaw.pycaw import AudioUtilities as peepee, ISimpleAudioVolume as mandm
@@ -25,7 +26,7 @@ except:
     os.system("pip install pycaw")
     os.system("pip3 install pycaw")
     print("we're in\n")
-    os.system("python "+DIR+"horsefingers.py")
+    os.system("python " + DIR + "horsefingers.py")
     quit(420)
 
 class sound:
@@ -50,7 +51,6 @@ class sound:
     def end(self):
         self.here()
         self.ent = True
-
 
 class storage:
     def __init__(self, wl='whitelist.txt', bl='blacklist.txt', gb='goodBoy.txt', cc='cancer.txt',
@@ -139,13 +139,14 @@ class window:
         return str(self.n)
 
 class timing:
-    def __init__(self, win: window, basetime=.3, lowbutt=50, facto=2, winfact=10):
+    def __init__(self, win: window, basetime=.3, lowbutt=42.0, facto=1 / .69, winfact=4.20, max_butt_factor=10):
         self.win = win
         self.stor = win.storage
         self.basetim = basetime
         self.lowbutt = lowbutt
         self.facto = facto
         self.winfact = winfact
+        self.mbf = max_butt_factor
         self._setDelays()
         self.thing = Thread(target=self.Handler, daemon=True)
 
@@ -167,10 +168,14 @@ class timing:
             if not pwr.charging():
                 self.tim *= self.facto
                 if pwr.battry() < self.lowbutt:
-                    self.tim *= self.lowbutt / pwr.battry()
+                    self.tim *= self.lowbutt / (pwr.battry() - 1 + self.lowbutt / self.mbf)
         except:
             pass
         self.wintime = self.winfact * self.tim
+
+    def __str__(self):
+        return 'base: ' + str(self.basetim) + '\n' + 'delay: ' + str(self.tim) + '\n' + 'window time: ' + str(
+            self.wintime)
 
 go = True
 
@@ -182,7 +187,7 @@ def end():
             go = False
 
 print("enter :q to quit")
-enderman = Thread(target=end, daemon=False)
+enderman = Thread(target=end, daemon=True)
 enderman.start()
 x = storage()
 sonic_smut = sound()
