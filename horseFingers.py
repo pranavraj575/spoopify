@@ -185,7 +185,10 @@ def record(reccy,clout):
     snake=''
     for thing in pee:
         snake+=thing+"\t"+str(reccy[thing])+"\n"
-    clout(snake)
+    try:
+        clout(snake)
+    except:
+        print("invalid output thingy stoopid")
 reccy = defaultdict(lambda: 0)
 try:
     reccy.update({thingy.split("\t")[0]: float(thingy.split("\t")[1]) for thingy in
@@ -202,8 +205,11 @@ def end():
         if penis == ":q":
             sonic_smut.end()
             go = False
-        if penis == "h":
+        if penis.startswith("history"):
             record(reccy,lambda snake:print(snake.replace("\t",":\t")))
+        if penis=="h":
+            print(":q to quit")
+            print("history to show history")
 
 
 
