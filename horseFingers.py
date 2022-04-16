@@ -180,6 +180,7 @@ class timing:
 
 reckey=DIR + "reccy.txt"
 def record(reccy,clout,strform=lambda x,biggest:x+"\t",rnd=False):
+    if not reccy: return ''
     pee=list(reccy)
     pee.sort(key=lambda arr:reccy[arr],reverse=True)
     snake=''
