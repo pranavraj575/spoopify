@@ -179,12 +179,13 @@ class timing:
             self.wintime)
 
 reckey=DIR + "reccy.txt"
-def record(reccy,clout):
+def record(reccy,clout,rnd=False):
     pee=list(reccy)
     pee.sort(key=lambda arr:reccy[arr],reverse=True)
     snake=''
     for thing in pee:
-        snake+=thing+"\t"+str(reccy[thing])+"\n"
+        snake+=thing+"\t"
+        snake+=str((round if rnd else lambda x:x)(reccy[thing]))+"\n"
     try:
         clout(snake)
     except:
@@ -206,12 +207,10 @@ def end():
             sonic_smut.end()
             go = False
         if penis.startswith("history"):
-            record(reccy,lambda snake:print(snake.replace("\t",":\t")))
+            record(reccy,lambda snake:print(snake.replace("\t",":\t")),rnd=True)
         if penis=="h":
             print(":q to quit")
             print("history to show history")
-
-
 
 print("enter :q to quit")
 enderman = Thread(target=end, daemon=True)
