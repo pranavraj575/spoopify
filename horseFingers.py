@@ -208,21 +208,22 @@ def end():
             go = False
         if penis.startswith("history"):
             art=defaultdict(lambda:0)
-            if "-a-" in penis:
-                for thing in reccy:
-                    if "-" in thing:
-                        art[thing[:thing.index('-')-1]]+=reccy[thing]
-            elif "-a " in penis:
-                guy=penis[penis.index("-a ")+3:]
-                for thing in reccy:
-                    if "-" in thing and thing[:thing.index('-')-1]==guy:
-                        art[thing[thing.index('-')+2:]]+=reccy[thing]
+            if "-a" in penis:
+                if "-a " in penis:
+                    guy = penis[penis.index("-a ") + 3:]
+                    for thing in reccy:
+                        if "-" in thing and thing[:thing.index('-') - 1].lower() == guy:
+                            art[thing[thing.index('-') + 2:]] += reccy[thing]
+                else:
+                    for thing in reccy:
+                        if "-" in thing:
+                            art[thing[:thing.index('-')-1]]+=reccy[thing]
             else:
                 art=reccy
             record(art,lambda snake:print(snake.replace("\t",":\t")),rnd=True)
         if penis=="h":
             print(":q to quit")
-            print("history to show history, add -a- by artist; -a [guy] for specific")
+            print("history to show history, add -a by artist; -a [guy] for specific")
 
 print("enter :q to quit")
 enderman = Thread(target=end, daemon=True)
