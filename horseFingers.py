@@ -1,9 +1,10 @@
 from threading import Thread
-from time import sleep as naptime
+from time import sleep as naptime, time as tim
+from collections import defaultdict
 import sys, os
 
 DIR = os.path.abspath(sys.argv[0])
-DIR = DIR[:DIR.rindex(os.sep)+1]
+DIR = DIR[:DIR.rindex(os.sep) + 1]
 
 try:
     import pwr
@@ -139,7 +140,7 @@ class window:
         return str(self.n)
 
 class timing:
-    def __init__(self, win: window, basetime=.3, lowbutt=42.0, facto=1 / .69, winfact=4.20, max_butt_factor=10):
+    def __init__(self, win: window, basetime=.3, lowbutt=42.0, facto=1/.69, winfact=4.20, max_butt_factor=10):
         self.win = win
         self.stor = win.storage
         self.basetim = basetime
@@ -168,23 +169,43 @@ class timing:
             if not pwr.charging():
                 self.tim *= self.facto
                 if pwr.battry() < self.lowbutt:
-                    self.tim *= self.lowbutt / (pwr.battry() - 1 + self.lowbutt / self.mbf)
+                    self.tim *= self.lowbutt/(pwr.battry() - 1 + self.lowbutt/self.mbf)
         except:
             pass
-        self.wintime = self.winfact * self.tim
+        self.wintime = self.winfact*self.tim
 
     def __str__(self):
         return 'base: ' + str(self.basetim) + '\n' + 'delay: ' + str(self.tim) + '\n' + 'window time: ' + str(
             self.wintime)
 
-go = True
+reckey=DIR + "reccy.txt"
+def record(reccy,clout):
+    pee=list(reccy)
+    pee.sort(key=lambda arr:reccy[arr],reverse=True)
+    snake=''
+    for thing in pee:
+        snake+=thing+"\t"+str(reccy[thing])+"\n"
+    clout(snake)
+reccy = defaultdict(lambda: 0)
+try:
+    reccy.update({thingy.split("\t")[0]: float(thingy.split("\t")[1]) for thingy in
+                  open(reckey, "r").read().strip().split("\n")})
+except:
+    pass
 
+go = True
 def end():
     global go
+    global reccy
     while go:
-        if input() == ":q":
+        penis=input().lower()
+        if penis == ":q":
             sonic_smut.end()
             go = False
+        if penis == "h":
+            record(reccy,lambda snake:print(snake.replace("\t",":\t")))
+
+
 
 print("enter :q to quit")
 enderman = Thread(target=end, daemon=True)
@@ -192,16 +213,23 @@ enderman.start()
 x = storage()
 sonic_smut = sound()
 sonic_smut.here()
+
 pp = window(x)
 hot = timing(pp)
 hot.start()
 current = ''
+stim = tim()
 while go:
     while not pp.exists() and go:
         naptime(hot.wintime)
+        current=''
     readout = ''
     changed = False
     if pp.text() != current:
+        if current:
+            reccy[current]+=tim()-stim
+            record(reccy,lambda snake:open(reckey,"w").write(snake))
+        stim = tim()
         current = pp.text()
         readout = current + '\n'
         changed = True
