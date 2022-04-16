@@ -179,12 +179,13 @@ class timing:
             self.wintime)
 
 reckey=DIR + "reccy.txt"
-def record(reccy,clout,rnd=False):
+def record(reccy,clout,strform=lambda x,biggest:x+"\t",rnd=False):
     pee=list(reccy)
     pee.sort(key=lambda arr:reccy[arr],reverse=True)
     snake=''
+    biggest=max(pee,key=lambda penis:len(penis))
     for thing in pee:
-        snake+=thing+"\t"
+        snake+=strform(thing,biggest)
         snake+=str((round if rnd else lambda x:x)(reccy[thing]))+"\n"
     try:
         clout(snake)
@@ -206,7 +207,7 @@ def end():
         if penis == ":q":
             sonic_smut.end()
             go = False
-        if penis.startswith("history"):
+        if penis.startswith(":h"):
             art=defaultdict(lambda:0)
             if "-a" in penis:
                 if "-a " in penis:
@@ -220,10 +221,10 @@ def end():
                             art[thing[:thing.index('-')-1]]+=reccy[thing]
             else:
                 art=reccy
-            record(art,lambda snake:print(snake.replace("\t",":\t")),rnd=True)
+            record(art,print,strform=lambda lad,biggest:lad+":"+" "*(len(biggest)-len(lad))+"\t",rnd=True)
         if penis=="h":
             print(":q to quit")
-            print("history to show history, add -a by artist; -a [guy] for specific")
+            print(":h to show history, add -a by artist; -a [guy] for specific")
 
 print("enter :q to quit")
 enderman = Thread(target=end, daemon=True)
