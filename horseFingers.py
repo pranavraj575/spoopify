@@ -178,20 +178,22 @@ class timing:
         return 'base: ' + str(self.basetim) + '\n' + 'delay: ' + str(self.tim) + '\n' + 'window time: ' + str(
             self.wintime)
 
-reckey=DIR + "reccy.txt"
-def record(reccy,clout,strform=lambda x,biggest:x+"\t",rnd=False):
+reckey = DIR + "reccy.txt"
+
+def record(reccy, clout, strform=lambda x, biggest: x + "\t", rnd=False):
     if not reccy: return ''
-    pee=list(reccy)
-    pee.sort(key=lambda arr:reccy[arr],reverse=True)
-    snake=''
-    biggest=max(pee,key=lambda penis:len(penis))
+    pee = list(reccy)
+    pee.sort(key=lambda arr: reccy[arr])
+    snake = ''
+    biggest = max(pee, key=lambda penis: len(penis))
     for thing in pee:
-        snake+=strform(thing,biggest)
-        snake+=str((round if rnd else lambda x:x)(reccy[thing]))+"\n"
+        snake += strform(thing, biggest)
+        snake += str((round if rnd else lambda x: x)(reccy[thing])) + "\n"
     try:
         clout(snake)
     except:
         print("invalid output thingy stoopid")
+
 reccy = defaultdict(lambda: 0)
 try:
     reccy.update({thingy.split("\t")[0]: float(thingy.split("\t")[1]) for thingy in
@@ -200,16 +202,17 @@ except:
     pass
 
 go = True
+
 def end():
     global go
     global reccy
     while go:
-        penis=input().lower()
+        penis = input().lower()
         if penis == ":q":
             sonic_smut.end()
             go = False
         if penis.startswith(":h"):
-            art=defaultdict(lambda:0)
+            art = defaultdict(lambda: 0)
             if "-a" in penis:
                 if "-a " in penis:
                     guy = penis[penis.index("-a ") + 3:]
@@ -219,11 +222,11 @@ def end():
                 else:
                     for thing in reccy:
                         if "-" in thing:
-                            art[thing[:thing.index('-')-1]]+=reccy[thing]
+                            art[thing[:thing.index('-') - 1]] += reccy[thing]
             else:
-                art=reccy
-            record(art,print,strform=lambda lad,biggest:lad+":"+" "*(len(biggest)-len(lad))+"\t",rnd=True)
-        if penis=="h":
+                art = reccy
+            record(art, print, strform=lambda lad, biggest: lad + ":" + " "*(len(biggest) - len(lad)) + "\t", rnd=True)
+        if penis == "h":
             print(":q to quit")
             print(":h to show history, add -a by artist; -a [guy] for specific")
 
@@ -242,13 +245,13 @@ stim = tim()
 while go:
     while not pp.exists() and go:
         naptime(hot.wintime)
-        current=''
+        current = ''
     readout = ''
     changed = False
     if pp.text() != current:
         if current and not x.isAd(current):
-            reccy[current]+=tim()-stim
-            record(reccy,lambda snake:open(reckey,"w").write(snake))
+            reccy[current] += tim() - stim
+            record(reccy, lambda snake: open(reckey, "w").write(snake))
         stim = tim()
         current = pp.text()
         readout = current + '\n'
